@@ -10,7 +10,7 @@ async def start_handler(message: types.Message):
     await bot.send_message(chat_id=message.from_user.id,
                            text='Hello')
 
-    await message.answer(text='Привет')
+    # await message.answer(text='Привет')
 
 
 async def info_handler(message: types.Message):
