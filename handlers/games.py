@@ -15,11 +15,12 @@ async def game_dice(message: types.Message):
     else:
         result = "Ничья!"
 
-    await message.answer(f"Бот выбрал: {bot_game}\nВы выбрали: {player_game}\n{result}")
-
+    await message.answer(f"{bot_game}")
+    await message.answer(f"{player_game}")
+    await message.answer(f"{result}")
 
 
 
 
 def register_game(dp: Dispatcher):
-    dp.register_messenge_handler(game_dice=['game'])
+    dp.register_message_handler(game_dice, commands=['game'])
