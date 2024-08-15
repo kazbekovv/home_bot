@@ -6,8 +6,7 @@ import random
 games = ['⚽', '🎰', '🏀', '🎯', '🎳', '🎲']
 
 async def game_dice(message: types.Message):
-    bot_game = random.choice(games)
-    player_game = random.choice(games)
+    bot_game = player_game = random.choice(games)
     if games.index(bot_game) > games.index(player_game):
         result = 'bot win'
     elif games.index(bot_game) < games.index(player_game):
@@ -24,3 +23,4 @@ async def game_dice(message: types.Message):
 
 def register_game(dp: Dispatcher):
     dp.register_message_handler(game_dice, commands=['game'])
+
