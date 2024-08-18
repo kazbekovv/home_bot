@@ -14,6 +14,7 @@ class FSM_store(StatesGroup):
     category_product = State()
     info_product = State()
     photo_product = State()
+    collection_product = State()
     submit = State()
 
 
@@ -85,6 +86,19 @@ async def load_photo(message: types.Message, state: FSMContext):
                                reply_markup=buttons.submit_buttons)
     await FSM_store.next()
 
+async def load_collection_product(message: types.Message, state: FSMContext):
+    async with state.proxy() as data_store:
+        data_store['collection_product'] = message.text
+        productid = data_store['id_product']  # Используйте ID продукта для вставки в таблицу
+
+    await db_main.sql_insert_collection_product(
+        productid=productid,
+        collection=data_store['collection_product']
+    )
+
+    await message.answer(f"Продукт добавлен в коллекцию '{data_store['collection_product']}'")
+    await FSM_store.next()
+
 
 async def submit(message: types.Message, state: FSMContext):
     if message.text == "Да":
@@ -132,4 +146,5 @@ def store_fsm(dp: Dispatcher):
     dp.register_message_handler(load_category_product, state=FSM_store.category_product)
     dp.register_message_handler(load_info_product, state=FSM_store.info_product)
     dp.register_message_handler(load_photo, state=FSM_store.photo_product, content_types=['photo'])
+    dp.register_message_handler(load_collection_product, state=FSM_store.collection_product)
     dp.register_message_handler(submit, state=FSM_store.submit)

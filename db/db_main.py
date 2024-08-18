@@ -39,3 +39,9 @@ async def sql_insert_products_detail(category, info_product, id_product):
         id_product
     ))
     db.commit()
+
+
+
+async def sql_insert_collection_product(productid, collection):
+    cursor.execute(queries.INSERT_COLLECTION_PRODUCTS, (productid, collection))
+    db.commit()

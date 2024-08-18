@@ -42,3 +42,17 @@ INSERT_PRODUCTS_DETAILS = """
     INSERT INTO products_details(category, info_product, id_product)
     VALUES (?, ?, ?)
 """
+
+CREATE_TABLE_COLLECTION_PRODUCTS = """
+    CREATE TABLE IF NOT EXISTS collection_products
+    (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        productid INTEGER NOT NULL,
+        collection TEXT NOT NULL
+    )
+"""
+
+INSERT_COLLECTION_PRODUCTS = """
+    INSERT INTO collection_products (productid, collection)
+    VALUES (?, ?)
+"""
