@@ -11,6 +11,7 @@ async def sql_create():
     cursor.execute(queries.CREATE_TABLE_REGISTRATION)
     cursor.execute(queries.CREATE_TABLE_PRODUCTS)
     cursor.execute(queries.CREATE_TABLE_PRODUCTS_DETAILS)
+    cursor.execute(queries.CREATE_TABLE_SHEETS)
     db.commit()
 
 
@@ -44,4 +45,11 @@ async def sql_insert_products_detail(category, info_product, id_product):
 
 async def sql_insert_collection_product(productid, collection):
     cursor.execute(queries.INSERT_COLLECTION_PRODUCTS, (productid, collection))
+    db.commit()
+
+
+async def sql_insert_sheet_data(telegram_id, product_name, size, category, price):
+    cursor.execute(queries.INSERT_SHEET_DATA, (
+        telegram_id, product_name, size, category, price
+    ))
     db.commit()

@@ -43,20 +43,27 @@ async def process_photo(message: types.Message, state: FSMContext):
     size = data.get('size')
     category = data.get('category')
     price = data.get('price')
+    telegram_id = message.from_user.id  # Получаем telegram_id пользователя
 
     await message.answer_photo(photo_id)
     await message.answer(f"Товар: {product_name}\nРазмер: {size}\nКатегория: {category}\nСтоимость: {price}")
     await message.answer("Верные ли данные?", reply_markup=buttons.choose_buttons)
+
+    await sql_insert_sheet_data(telegram_id, product_name, size, category, price)
 
     await StoreFSM.confirming.set()
 
 async def confirm_data(message: types.Message, state: FSMContext):
     if message.text == "Да":
         await message.answer("Сохранено в базу")
+        # Вы можете добавить функцию сохранения в базу данных
     else:
         await message.answer("Вы можете начать заново, отправив команду /start")
 
     await state.finish()
+
+
+
 
 def register_fsm(dp: Dispatcher):
     dp.register_message_handler(start, commands=['start'])
@@ -66,3 +73,4 @@ def register_fsm(dp: Dispatcher):
     dp.register_message_handler(process_price, state=StoreFSM.waiting_for_price)
     dp.register_message_handler(process_photo, state=StoreFSM.waiting_for_photo, content_types=['photo'])
     dp.register_message_handler(confirm_data, state=StoreFSM.confirming)
+
