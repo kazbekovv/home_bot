@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "lesson-44-2",
+  "private_key_id": "fef32948cbb103380d01b558fc9bfd506ff0b113",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDB8qvNSK5Fde10\nzC/Y3T2nCuSQD9z6cTJsbnuJ6drTe/mkU435+5KonwYMThwvUlcsgcVV2oLcBpi7\nu4xGI9T/HmjUJi+Z3cHoxg+qqsd58Z+5jmU4HSeW7kOG2PNv9m/ryXZyflwlMV/M\nYEhiLSIFCQVa2OjVkThihtqu4JrLerYf71YLwCpNrsmBn6obrUPt9ZsNFoKkUekh\nmliIjmkVoxlHXe7YUVPWGsEP8vgf0HA3EEt1xEYUDgG/5Br2vmihKUkuBJKR5CMa\nBQaYEgeYgxCTLgaajob5v23AiMI6bfo4rZoElRZzMWBcvVQ33m+2s6ySZIt9CyEt\n1CBdhqFZAgMBAAECggEAASHYHWhsy1nYeJupitf4dcAYnKZZuU+NsQ2Fue92zXsW\nNmlIyqUMkotCcdzHNC0u9kL4AoaLnYUKAWHjUX8rjZAL93MVSONpxUtaCOUa1Cwp\ngnU27jiDWZGgrMnu7+AjKp/1iaO8XiOMkN5IsI6yubn3Vp6uC0h1U7lAT7rexHcm\nEH/qPXxFIvztE4W04yZ/vbYSccOTMOzxqTG74WTOmMQ+b/JeOGCXFQPEFF5IZG3Q\nMOPkblCGE82hiY05LrKRaXvljcpAIR2J6uZFj733ffZ5CrPexd+dd4NVsMW26A3r\nDt00ZX980YU6iUhXpuKdnuHTP73oKlY7wfwf6EJqlQKBgQDvRxissc3l3w3FfFPC\nRaiDPAXzWInlbXHsW6f7xQqi5YL6pMHdIIhvbyuuF9Et8zG67VlXWJk5rLs5SQ3n\nvz0I67m/bQeserHmEcANdhgksrFh+qa+0L/Mgi54JrLxjR4AtLxW8vrQ1RKdUJzr\noGbVTUKwFAOKz6+lr6MkpPEqdQKBgQDPgJUJjOfCHNdIwMy4CGQtWDrUJSyRR/WC\nVynoBpTmM5PpMyleOblOY80p9vEMHBaukm1pob44EaVqm3b4cQz7htXyPK+OWzla\nkkNwHjig3iXEVjs9B9VNs92M+hZEXnjFv1HVXLwhXhMgKUJpOFOiG78TbCb2JHmy\njO9sqM9W1QKBgQDHvK6BQi9hCvBhASaeDi3b1tgUybzakqC9r8krJtF5J2NNvQjD\ngOvDMabhvan01ISXyJeCjUfi2Ci1aiE8aewWLUgx3l7AgO9N4VVTJ1iCEdR2uJhG\nwtTIb4dA7vUDJEx+RGDPqCbs+mB+h5NmMdCFj+fyOdK3JiU2hsYFydYzHQKBgQCU\nEd9IN2JSJB6D7gCn+mTx7pncNMK+0SiiX+ypg7jRJFESAc4tTOesxo7quSp9R7Xv\n0NF+pUqF3CG8F0AoPRPUkP0upJtp7DLbLLAu24HxWVR97ELNZD+T+RvJs9Qb6YYp\nJkMRC+G7tdPUCV04lFcpwL7y7yRGVPT6spNPaI68GQKBgGXAs9/Lt/qk8q+rZcRd\nUaUECm+h/gsHYuytAy8NnZ+eAchZ30vcdXwrttx4x1T2FBHPV6DnePgV09Gqi+0p\nlDKoOgyP8x+5XBwTmZ+XXLJGqOTXnchKjx3FAHtnQfGbus40TB7/m07sCm2wcldu\nl3H3ESIH6I1IGIcEsDCoU44t\n-----END PRIVATE KEY-----\n",
+  "client_email": "lessons-sheets-tables@lesson-44-2.iam.gserviceaccount.com",
+  "client_id": "112238304474903761376",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/lessons-sheets-tables%40lesson-44-2.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

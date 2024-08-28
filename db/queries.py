@@ -57,19 +57,3 @@ INSERT_COLLECTION_PRODUCTS = """
     VALUES (?, ?)
 """
 
-CREATE_TABLE_SHEETS = """
-    CREATE TABLE IF NOT EXISTS sheets
-    (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        telegram_id VARCHAR(255),
-        product_name VARCHAR(255),
-        size VARCHAR(255),
-        category VARCHAR(255),
-        price VARCHAR(255)
-    )
-"""
-
-INSERT_SHEET_DATA = """
-    INSERT INTO sheets (telegram_id, product_name, size, category, price)
-    VALUES (?, ?, ?, ?, ?)
-"""

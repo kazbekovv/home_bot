@@ -1,76 +1,108 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
 import buttons
+import re
+from aiogram.types import ReplyKeyboardRemove
 
-class StoreFSM(StatesGroup):
-    waiting_for_product_name = State()
-    waiting_for_size = State()
-    waiting_for_category = State()
-    waiting_for_price = State()
-    waiting_for_photo = State()
-    confirming = State()  # Добавлено состояние confirming
 
-async def start(message: types.Message):
-    await message.answer("Введите название товара:")
-    await StoreFSM.waiting_for_product_name.set()
+class FSM_reg(StatesGroup):
+    fullname = State()
+    age = State()
+    email = State()
+    gender = State()
+    phone = State()
+    photo = State()
 
-async def process_product_name(message: types.Message, state: FSMContext):
-    await state.update_data(product_name=message.text)
-    await message.answer("Выберите размер:", reply_markup=buttons.size_buttons)
-    await StoreFSM.waiting_for_size.set()
 
-async def process_size(message: types.Message, state: FSMContext):
-    size = message.text
-    await state.update_data(size=size)
-    await message.answer("Введите категорию:")
-    await StoreFSM.waiting_for_category.set()
+async def fsm_start(message: types.Message):
+    await message.answer(text='Привет! \n'
+                              'Напиши своё фио:\n\n'
+                              '!Для того чтобы воспользоваться командами, '
+                              'нажмите на "Отмена"!', reply_markup=buttons.cancel)
+    await FSM_reg.fullname.set()
 
-async def process_category(message: types.Message, state: FSMContext):
-    await state.update_data(category=message.text)
-    await message.answer("Введите стоимость:")
-    await StoreFSM.waiting_for_price.set()
 
-async def process_price(message: types.Message, state: FSMContext):
-    await state.update_data(price=message.text)
-    await message.answer("Отправьте фотографию товара:")
-    await StoreFSM.waiting_for_photo.set()
+async def load_name(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['fullname'] = message.text
 
-async def process_photo(message: types.Message, state: FSMContext):
-    photo_id = message.photo[-1].file_id
-    data = await state.get_data()
-    product_name = data.get('product_name')
-    size = data.get('size')
-    category = data.get('category')
-    price = data.get('price')
-    telegram_id = message.from_user.id  # Получаем telegram_id пользователя
+    await FSM_reg.next()
+    await message.answer(text='Укажите свой возраст:')
 
-    await message.answer_photo(photo_id)
-    await message.answer(f"Товар: {product_name}\nРазмер: {size}\nКатегория: {category}\nСтоимость: {price}")
-    await message.answer("Верные ли данные?", reply_markup=buttons.choose_buttons)
 
-    await sql_insert_sheet_data(telegram_id, product_name, size, category, price)
+async def load_age(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['age'] = message.text
 
-    await StoreFSM.confirming.set()
+    await FSM_reg.next()
+    await message.answer(text='Укажите свою почту:')
 
-async def confirm_data(message: types.Message, state: FSMContext):
-    if message.text == "Да":
-        await message.answer("Сохранено в базу")
-        # Вы можете добавить функцию сохранения в базу данных
-    else:
-        await message.answer("Вы можете начать заново, отправив команду /start")
 
+async def load_email(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        email = message.text.strip()
+
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            await message.answer("Некорректный формат электронной почты!")
+            return
+        data['email'] = email
+
+    await FSM_reg.next()
+    await message.answer(text='Укажите свой пол:')
+
+
+async def load_gender(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['gender'] = message.text
+
+    await FSM_reg.next()
+    await message.answer(text='Укажите свой номер телефона:')
+
+
+async def load_phone(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['phone'] = message.text
+
+    await FSM_reg.next()
+    await message.answer(text='Отправьте нам свою фотографию:')
+
+
+async def load_photo(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['photo'] = message.photo[-1].file_id
+
+    kb = types.ReplyKeyboardRemove()
+
+    await message.answer_photo(photo=data['photo'],
+                               caption=f"Ваше фио - {data['fullname']}\n"
+                                       f"Возраст - {data['age']}\n"
+                                       f"Почта - {data['email']}\n"
+                                       f"Пол - {data['gender']}\n"
+                                       f"Номер тел - {data['phone']}\n"
+                               )
+    await message.answer(text='Спасибо за регистрацию!)', reply_markup=kb)
     await state.finish()
 
 
+async def cancel_fsm(message: types.Message, state: FSMContext):
+    current_state = await state.get_state()
+    if current_state is not None:
+        await state.finish()
+        await message.answer(text='Отменено!')
 
 
 def register_fsm(dp: Dispatcher):
-    dp.register_message_handler(start, commands=['start'])
-    dp.register_message_handler(process_product_name, state=StoreFSM.waiting_for_product_name)
-    dp.register_message_handler(process_size, state=StoreFSM.waiting_for_size)
-    dp.register_message_handler(process_category, state=StoreFSM.waiting_for_category)
-    dp.register_message_handler(process_price, state=StoreFSM.waiting_for_price)
-    dp.register_message_handler(process_photo, state=StoreFSM.waiting_for_photo, content_types=['photo'])
-    dp.register_message_handler(confirm_data, state=StoreFSM.confirming)
+    dp.register_message_handler(cancel_fsm, Text(equals='Отмена',
+                                                 ignore_case=True),
+                                state="*")
 
+    dp.register_message_handler(fsm_start, commands=['registration'])
+    dp.register_message_handler(load_name, state=FSM_reg.fullname)
+    dp.register_message_handler(load_age, state=FSM_reg.age)
+    dp.register_message_handler(load_email, state=FSM_reg.email)
+    dp.register_message_handler(load_gender, state=FSM_reg.gender)
+    dp.register_message_handler(load_phone, state=FSM_reg.phone)
+    dp.register_message_handler(load_photo, state=FSM_reg.photo,
+                                content_types=['photo'])

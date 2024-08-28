@@ -47,9 +47,3 @@ async def sql_insert_collection_product(productid, collection):
     cursor.execute(queries.INSERT_COLLECTION_PRODUCTS, (productid, collection))
     db.commit()
 
-
-async def sql_insert_sheet_data(telegram_id, product_name, size, category, price):
-    cursor.execute(queries.INSERT_SHEET_DATA, (
-        telegram_id, product_name, size, category, price
-    ))
-    db.commit()
