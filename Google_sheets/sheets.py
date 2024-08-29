@@ -3,11 +3,18 @@ from aiogram import Dispatcher, types
 from config import dp
 
 
-def update_google_sheet_products(name, size, price, id_product, category, info_product, collection):
+def update_google_sheet_registration(data):
     try:
         range_name = "Лист1!A:G"
-
-        row = [name, size, price, id_product, category, info_product, collection]
+        row = [
+            data['telegram_id'],  # Добавляем telegram_id в первую колонку
+            data['fullname'],
+            data['age'],
+            data['email'],
+            data['gender'],
+            data['phone'],
+            data['photo']
+        ]
 
         service.spreadsheets().values().append(
             spreadsheetId=google_sheet_id_users,
@@ -16,10 +23,29 @@ def update_google_sheet_products(name, size, price, id_product, category, info_p
             insertDataOption='INSERT_ROWS',
             body={'values': [row]}
         ).execute()
-        print(row)
 
     except Exception as e:
         print(e)
+
+async def load_photo(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['photo'] = message.photo[-1].file_id
+        data['telegram_id'] = message.from_user.id  # Сохраняем telegram_id в состояние
+
+    # Запись данных в Google Sheets
+    update_google_sheet_registration(data)
+
+    kb = types.ReplyKeyboardRemove()
+
+    await message.answer_photo(photo=data['photo'],
+                               caption=f"Ваше фио - {data['fullname']}\n"
+                                       f"Возраст - {data['age']}\n"
+                                       f"Почта - {data['email']}\n"
+                                       f"Пол - {data['gender']}\n"
+                                       f"Номер тел - {data['phone']}\n"
+                               )
+    await message.answer(text='Спасибо за регистрацию!)', reply_markup=kb)
+    await state.finish()
 
 
 def get_google_sheets_data():
